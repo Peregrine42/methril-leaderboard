@@ -30,10 +30,10 @@ Leaderboard.select = (player) ->
   Leaderboard.selectedPlayerID = player._id
 
 Leaderboard.selected = (player) ->
-  return Leaderboard.selectedPlayerID == player._id
+  return Leaderboard.selectedPlayerID.valueOf() == player._id.valueOf()
 
 Leaderboard.givePoints = () ->
-  if (Leaderboard.selectedPlayerID)
+  if (Leaderboard.selectedPlayerID != null)
     PlayerList.update({_id: Leaderboard.selectedPlayerID}, {$inc: {score: 5}})
 
 # controller
@@ -47,8 +47,7 @@ Leaderboard.view = (ctrl) ->
     m("ul", [
       ctrl.players.map((player) ->
         params =
-          style:
-            background: Leaderboard.selected(player) ? "yellow" : ""
+          style: { background: Leaderboard.selected(player) ? "yellow" : "" }
           onclick: Leaderboard.select.bind(this, player)
         return m("li", params, player.name + ": " + player.score)
       )
